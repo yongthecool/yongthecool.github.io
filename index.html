@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간단 메모장</title>
+    <!-- 구글 웹폰트 적용 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 외부 CSS 스타일시트 연결 -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="memo-container">
+        <header class="memo-header">
+            <h1>📝 간단 메모장</h1>
+            <p>생각이나 중요한 메모를 브라우저에 안전하게 보관하세요.</p>
+        </header>
+
+        <form id="memo-form">
+            <input type="hidden" id="edit-memo-id" value="">
+            <div class="form-group">
+                <div class="form-label">
+                    <label for="memo-title">제목</label>
+                    <span id="edit-badge" class="edit-badge">수정 모드</span>
+                </div>
+                <input class="form-input" type="text" id="memo-title" name="title" placeholder="메모 제목을 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="memo-content">내용</label>
+                <textarea class="form-textarea" id="memo-content" name="content" placeholder="메모할 상세 내용을 입력하세요" required></textarea>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" id="btn-submit" class="btn btn-submit">
+                    <span id="btn-submit-text">저장하기</span>
+                </button>
+                <button type="button" id="btn-cancel-edit" class="btn btn-cancel-edit">수정 취소</button>
+                <button type="button" id="btn-reset" class="btn btn-reset">초기화</button>
+            </div>
+        </form>
+
+        <!-- 저장된 메모 목록 -->
+        <section class="memo-list-section">
+            <div class="list-header">
+                <h2>
+                    저장된 메모
+                    <span id="memo-count" class="memo-badge">0</span>
+                </h2>
+            </div>
+            <div id="memo-items" class="memo-items">
+                <!-- 자바스크립트로 렌더링 -->
+            </div>
+        </section>
+    </div>
+
+    <!-- 토스트 알림 UI -->
+    <div id="toast" class="toast">알림 메시지</div>
+
+    <!-- 외부 JavaScript 스크립트 연결 -->
+    <script src="script.js"></script>
+</body>
+</html>
