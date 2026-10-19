@@ -1,212 +1,165 @@
-// DOM 요소 참조
-const memoForm = document.getElementById('memo-form');
-const titleInput = document.getElementById('memo-title');
-const contentInput = document.getElementById('memo-content');
-const editMemoId = document.getElementById('edit-memo-id');
-const editBadge = document.getElementById('edit-badge');
-const btnSubmitText = document.getElementById('btn-submit-text');
-const btnCancelEdit = document.getElementById('btn-cancel-edit');
-const btnReset = document.getElementById('btn-reset');
-const memoItemsContainer = document.getElementById('memo-items');
-const memoCount = document.getElementById('memo-count');
-const toast = document.getElementById('toast');
+// ============================================================
+// SGI서울보증 행복대리점 - JavaScript 로직
+// 납세보증보험 모의 계산기, 원클릭 복사, 상담 폼 접수 처리
+// ============================================================
 
-const STORAGE_KEY = 'simple_memos_data';
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. 모바일 햄버거 메뉴 토글
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const navLinks = document.getElementById('nav-links');
+
+    if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link, .nav-btn-call').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    }
+
+    // 2. 납세보증보험료 모의 계산기 실시간 연동
+    const calcType = document.getElementById('calc-tax-type');
+    const calcAmount = document.getElementById('calc-amount');
+    const calcMonths = document.getElementById('calc-months');
+    const calcKorean = document.getElementById('calc-amount-korean');
+    const resultRate = document.getElementById('result-rate');
+    const resultPremium = document.getElementById('result-premium');
+
+    // 숫자를 한글 금액 단위(억, 만원)로 변환
+    function formatKoreanMoney(val) {
+        if (!val || val <= 0) return '0원';
+        const num = Number(val);
+        const eok = Math.floor(num / 100000000);
+        const man = Math.floor((num % 100000000) / 10000);
+        let str = '';
+        if (eok > 0) str += `${eok}억 `;
+        if (man > 0) str += `${man.toLocaleString()}만 `;
+        str += '원';
+        return str;
+    }
+
+    // 보증료 계산 실행
+    function calculatePremium() {
+        if (!calcAmount || !calcMonths || !calcType) return;
+
+        const amount = Number(calcAmount.value) || 0;
+        const months = Number(calcMonths.value) || 12;
+        const type = calcType.value;
+
+        // 한국어 금액 라벨 업데이트
+        calcKorean.textContent = formatKoreanMoney(amount);
+
+        // 보증 요율 설정 (평균 기준율)
+        let rate = 0.0095; // 기본 0.95%
+        let rateText = '약 0.95%';
+
+        if (type === 'inheritance') {
+            rate = 0.0095;
+            rateText = '약 0.95% (상속세)';
+        } else if (type === 'gift') {
+            rate = 0.0095;
+            rateText = '약 0.95% (증여세)';
+        } else {
+            rate = 0.0110;
+            rateText = '약 1.10% (일반세무)';
+        }
+
+        resultRate.textContent = rateText;
+
+        // 총 예상 보증료 = 보증금액 * 연요율 * (기간월 / 12)
+        const years = months / 12;
+        const premium = Math.round(amount * rate * years);
+
+        resultPremium.textContent = `${premium.toLocaleString()} 원`;
+    }
+
+    if (calcAmount && calcMonths && calcType) {
+        calcAmount.addEventListener('input', calculatePremium);
+        calcMonths.addEventListener('change', calculatePremium);
+        calcType.addEventListener('change', calculatePremium);
+        // 초기 실행
+        calculatePremium();
+    }
+
+    // 3. 상담 폼 접수 이벤트
+    const insuranceForm = document.getElementById('insurance-form');
+    if (insuranceForm) {
+        insuranceForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const clientName = document.getElementById('client-name').value;
+            const consultType = document.getElementById('consult-type').value;
+
+            showToast(`✅ ${clientName}님, [${consultType}] 상담 신청이 정상 접수되었습니다! 장용태 심사역이 곧 유선으로 안내드리겠습니다.`);
+            insuranceForm.reset();
+        });
+    }
+});
+
+// 4. 모의 견적 상담 폼으로 전달 및 스크롤
+window.requestWithCalc = function() {
+    const calcAmount = document.getElementById('calc-amount');
+    const calcType = document.getElementById('calc-tax-type');
+    const targetAmountInput = document.getElementById('target-amount');
+    const consultTypeSelect = document.getElementById('consult-type');
+    const consultSection = document.getElementById('consultation');
+
+    if (calcAmount && targetAmountInput) {
+        const val = Number(calcAmount.value) || 0;
+        const eok = val / 100000000;
+        targetAmountInput.value = `${eok}억 원`;
+    }
+
+    if (calcType && consultTypeSelect) {
+        if (calcType.value === 'inheritance') {
+            consultTypeSelect.value = '상속세 연부연납 납세보증';
+        } else if (calcType.value === 'gift') {
+            consultTypeSelect.value = '증여세 분납 납세보증';
+        }
+    }
+
+    if (consultSection) {
+        consultSection.scrollIntoView({ behavior: 'smooth' });
+        showToast('📝 모의 견적 정보가 상담 폼에 자동 입력되었습니다.');
+    }
+};
+
+// 5. 연락처/주소 클립보드 복사 함수
+window.copyContact = function(text, labelName) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(`📋 ${labelName}이(가) 클립보드에 복사되었습니다: ${text}`);
+        }).catch(() => {
+            fallbackCopy(text, labelName);
+        });
+    } else {
+        fallbackCopy(text, labelName);
+    }
+};
+
+function fallbackCopy(text, labelName) {
+    const tempInput = document.createElement('textarea');
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    showToast(`📋 ${labelName}이(가) 복사되었습니다: ${text}`);
+}
+
+// 6. 공통 토스트 알림 팝업
 let toastTimeout = null;
-
-// 토스트 알림 함수
 function showToast(message) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+
     toast.textContent = message;
     toast.classList.add('show');
+
     clearTimeout(toastTimeout);
     toastTimeout = setTimeout(() => {
         toast.classList.remove('show');
-    }, 2500);
+    }, 3000);
 }
-
-// 로컬스토리지에서 메모 가져오기
-function getMemos() {
-    const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
-}
-
-// 로컬스토리지에 메모 저장하기
-function saveMemos(memos) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(memos));
-}
-
-// 날짜 포맷팅 함수
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    const hh = String(date.getHours()).padStart(2, '0');
-    const min = String(date.getMinutes()).padStart(2, '0');
-    return `${yyyy}.${mm}.${dd} ${hh}:${min}`;
-}
-
-// 메모 목록 렌더링
-function renderMemos() {
-    const memos = getMemos();
-    memoCount.textContent = memos.length;
-
-    if (memos.length === 0) {
-        memoItemsContainer.innerHTML = `
-            <div class="empty-state">
-                아직 저장된 메모가 없습니다.<br>위에서 새로운 메모를 작성해보세요!
-            </div>
-        `;
-        return;
-    }
-
-    memoItemsContainer.innerHTML = memos.map(memo => `
-        <div class="memo-card" data-id="${memo.id}">
-            <div class="card-top">
-                <h3 class="card-title">${escapeHtml(memo.title)}</h3>
-                <span class="card-date">${formatDate(memo.date)}</span>
-            </div>
-            <div class="card-content">${escapeHtml(memo.content)}</div>
-            <div class="card-actions">
-                <button type="button" class="action-btn" onclick="downloadMemo(${memo.id})">다운로드</button>
-                <button type="button" class="action-btn" onclick="startEditMemo(${memo.id})">수정</button>
-                <button type="button" class="action-btn delete-btn" onclick="deleteMemo(${memo.id})">삭제</button>
-            </div>
-        </div>
-    `).join('');
-}
-
-// HTML 특수문자 이스케이프
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-// 폼 리셋 및 작성 모드로 복원
-function resetForm() {
-    memoForm.reset();
-    editMemoId.value = '';
-    editBadge.style.display = 'none';
-    btnCancelEdit.style.display = 'none';
-    btnSubmitText.textContent = '저장하기';
-    titleInput.focus();
-}
-
-// 메모 제출(신규 등록 또는 수정) 처리
-memoForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const title = titleInput.value.trim();
-    const content = contentInput.value.trim();
-    const targetId = editMemoId.value;
-
-    if (!title || !content) {
-        showToast('⚠️ 제목과 내용을 모두 입력해주세요.');
-        return;
-    }
-
-    const memos = getMemos();
-
-    if (targetId) {
-        // 수정 모드
-        const index = memos.findIndex(m => m.id == targetId);
-        if (index !== -1) {
-            memos[index].title = title;
-            memos[index].content = content;
-            memos[index].date = new Date().toISOString();
-            saveMemos(memos);
-            showToast('✏️ 메모가 수정되었습니다.');
-        }
-    } else {
-        // 신규 등록
-        const newMemo = {
-            id: Date.now(),
-            title,
-            content,
-            date: new Date().toISOString()
-        };
-        memos.unshift(newMemo);
-        saveMemos(memos);
-        showToast('✅ 메모가 저장되었습니다.');
-    }
-
-    resetForm();
-    renderMemos();
-});
-
-// 초기화 버튼 클릭 이벤트
-btnReset.addEventListener('click', () => {
-    if (titleInput.value || contentInput.value) {
-        resetForm();
-        showToast('🧹 입력창이 초기화되었습니다.');
-    } else {
-        showToast('입력창이 이미 비어있습니다.');
-    }
-});
-
-// 수정 취소 버튼 클릭 이벤트
-btnCancelEdit.addEventListener('click', () => {
-    resetForm();
-    showToast('수정이 취소되었습니다.');
-});
-
-// 메모 수정 모드 시작
-window.startEditMemo = function(id) {
-    const memos = getMemos();
-    const memo = memos.find(m => m.id === id);
-    if (!memo) return;
-
-    editMemoId.value = memo.id;
-    titleInput.value = memo.title;
-    contentInput.value = memo.content;
-
-    editBadge.style.display = 'inline-block';
-    btnCancelEdit.style.display = 'inline-flex';
-    btnSubmitText.textContent = '수정 완료';
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    titleInput.focus();
-    showToast('메모를 수정 중입니다.');
-};
-
-// 메모 삭제
-window.deleteMemo = function(id) {
-    if (!confirm('이 메모를 삭제하시겠습니까?')) return;
-
-    let memos = getMemos();
-    memos = memos.filter(m => m.id !== id);
-    saveMemos(memos);
-
-    // 삭제한 항목이 현재 수정 중이던 항목인 경우 폼 초기화
-    if (editMemoId.value == id) {
-        resetForm();
-    }
-
-    renderMemos();
-    showToast('🗑️ 메모가 삭제되었습니다.');
-};
-
-// 텍스트(.txt) 파일로 메모 다운로드
-window.downloadMemo = function(id) {
-    const memos = getMemos();
-    const memo = memos.find(m => m.id === id);
-    if (!memo) return;
-
-    const textContent = `제목: ${memo.title}\n작성일시: ${formatDate(memo.date)}\n\n${memo.content}`;
-    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${memo.title.replace(/[\\/:*?"<>|]/g, '_')}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    showToast('📥 텍스트 파일로 다운로드되었습니다.');
-};
-
-// 초기 로드 시 기존 메모 표시
-renderMemos();

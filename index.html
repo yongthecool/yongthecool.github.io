@@ -3,63 +3,625 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>간단 메모장</title>
-    <!-- 구글 웹폰트 적용 -->
+    <title>SGI서울보증 행복대리점 | 납세보증(증여세·상속세) 전문 심사역 장용태</title>
+    <meta name="description" content="SGI서울보증 구리지점 행복대리점. 상속세·증여세 납세보증보험 전문 심사, 가업승계지도사 1급 장용태. 보증증권 신속 발급, 계약·이행보증 원스톱 상담.">
+    <meta name="keywords" content="SGI서울보증, 서울보증보험, 행복대리점, 장용태, 납세보증보험, 상속세 납세보증, 증여세 납세보증, 가업승계지도사, 연부연납, 구리보증보험">
+
+    <!-- 프리미엄 한글 폰트: Pretendard -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- 외부 CSS 스타일시트 연결 -->
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- 스타일시트 -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="memo-container">
-        <header class="memo-header">
-            <h1>📝 간단 메모장</h1>
-            <p>생각이나 중요한 메모를 브라우저에 안전하게 보관하세요.</p>
-        </header>
 
-        <form id="memo-form">
-            <input type="hidden" id="edit-memo-id" value="">
-            <div class="form-group">
-                <div class="form-label">
-                    <label for="memo-title">제목</label>
-                    <span id="edit-badge" class="edit-badge">수정 모드</span>
-                </div>
-                <input class="form-input" type="text" id="memo-title" name="title" placeholder="메모 제목을 입력하세요" required>
+    <!-- 최상단 긴급 안내 & 퀵 컨택트 바 -->
+    <div class="top-announcement-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-left">
+                <span class="badge-tag">SGI서울보증 구리지점</span>
+                <span class="top-bar-text">상속세·증여세 연부연납 납세보증 전문 심사 & 가업승계 컨설팅</span>
             </div>
-
-            <div class="form-group">
-                <label class="form-label" for="memo-content">내용</label>
-                <textarea class="form-textarea" id="memo-content" name="content" placeholder="메모할 상세 내용을 입력하세요" required></textarea>
-            </div>
-
-            <div class="button-group">
-                <button type="submit" id="btn-submit" class="btn btn-submit">
-                    <span id="btn-submit-text">저장하기</span>
+            <div class="top-bar-right">
+                <a href="tel:1566-1028" class="top-contact-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <strong>1566-1028</strong>
+                </a>
+                <span class="bar-divider">|</span>
+                <button class="top-btn-copy" onclick="copyContact('0505-847-0005', '팩스 번호')">
+                    팩스: 0505-847-0005
                 </button>
-                <button type="button" id="btn-cancel-edit" class="btn btn-cancel-edit">수정 취소</button>
-                <button type="button" id="btn-reset" class="btn btn-reset">초기화</button>
+                <span class="bar-divider">|</span>
+                <button class="top-btn-copy" onclick="copyContact('8470005@naver.com', '이메일 주소')">
+                    8470005@naver.com
+                </button>
             </div>
-        </form>
-
-        <!-- 저장된 메모 목록 -->
-        <section class="memo-list-section">
-            <div class="list-header">
-                <h2>
-                    저장된 메모
-                    <span id="memo-count" class="memo-badge">0</span>
-                </h2>
-            </div>
-            <div id="memo-items" class="memo-items">
-                <!-- 자바스크립트로 렌더링 -->
-            </div>
-        </section>
+        </div>
     </div>
 
-    <!-- 토스트 알림 UI -->
-    <div id="toast" class="toast">알림 메시지</div>
+    <!-- 메인 내비게이션 바 -->
+    <header class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#hero" class="nav-brand">
+                <div class="brand-logo-box">
+                    <span class="sgic-txt">SGI</span>
+                    <span class="sgic-sub">서울보증</span>
+                </div>
+                <div class="brand-name-box">
+                    <strong class="agency-title">행복대리점</strong>
+                    <span class="agency-sub">전문 심사역 장용태</span>
+                </div>
+            </a>
 
-    <!-- 외부 JavaScript 스크립트 연결 -->
+            <nav class="nav-links" id="nav-links">
+                <a href="#about" class="nav-link">전문가 소개</a>
+                <a href="#tax-guarantee" class="nav-link">납세보증(증여·상속)</a>
+                <a href="#services" class="nav-link">취급 업무</a>
+                <a href="#calculator" class="nav-link">보증료 계산기</a>
+                <a href="#location" class="nav-link">오시는 길</a>
+                <a href="#consultation" class="nav-btn-call">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <span>온라인 상담신청</span>
+                </a>
+            </nav>
+
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="메뉴 열기">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. Hero 섹션 -->
+        <section class="hero-section" id="hero">
+            <div class="hero-backdrop"></div>
+            <div class="container hero-container">
+                <div class="hero-text-side">
+                    <div class="trust-badge-row">
+                        <span class="badge-trust sgic-badge">SGI 서울보증 공인</span>
+                        <span class="badge-trust cert-badge">가업승계지도사 1급</span>
+                        <span class="badge-trust tax-badge">납세보증 특화 심사</span>
+                    </div>
+
+                    <h1 class="hero-heading">
+                        상속세·증여세 납세보증부터 <br>
+                        <span class="color-sky">가업승계까지</span> 가장 확실한 솔루션
+                    </h1>
+
+                    <p class="hero-subtext">
+                        관할 세무서 연부연납 및 납세담보 제공, 복잡한 심사 절차 때문에 고민이신가요?<br>
+                        <strong>SGI서울보증 행복대리점 장용태 심사역</strong>이 자산 분석부터 보증증권 신속 발급까지 막힘없이 해결해 드립니다.
+                    </p>
+
+                    <div class="hero-btn-group">
+                        <a href="tel:1566-1028" class="btn btn-primary-large">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                            <span>직통 전화상담 1566-1028</span>
+                        </a>
+                        <a href="#consultation" class="btn btn-outline-large">
+                            <span>온라인 간편 상담 접수</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+
+                    <div class="hero-stat-card-row">
+                        <div class="hero-stat-card">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">세무서 제출 공인 증권</span>
+                        </div>
+                        <div class="hero-stat-card">
+                            <span class="stat-number">1급</span>
+                            <span class="stat-label">공인 가업승계지도사</span>
+                        </div>
+                        <div class="hero-stat-card">
+                            <span class="stat-number">One-Stop</span>
+                            <span class="stat-label">상담-심사-전자발급</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-image-side">
+                    <div class="image-frame-card">
+                        <img src="images/tax_hero.jpg" alt="SGI서울보증 행복대리점 납세보증 및 가업승계 상담" class="hero-img">
+                        <div class="floating-proof-badge badge-top">
+                            <div class="proof-icon">⚖️</div>
+                            <div>
+                                <strong>상속세 · 증여세 연부연납</strong>
+                                <small>부동산 근저당 대신 보증증권 제출</small>
+                            </div>
+                        </div>
+                        <div class="floating-proof-badge badge-bottom">
+                            <div class="proof-icon">🏢</div>
+                            <div>
+                                <strong>SGI서울보증 구리지점 행복대리점</strong>
+                                <small>신속 심사 & 맞춤형 보증 플랜</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 전문가 소개 및 강점 섹션 -->
+        <section class="section about-section" id="about">
+            <div class="container">
+                <div class="section-title-wrap text-center">
+                    <span class="sub-tag">EXPERT PROFILE</span>
+                    <h2 class="main-title">납세보증과 가업승계의 믿을 수 있는 파트너</h2>
+                    <p class="title-desc">사단법인 한국가업승계협회 공인 가업승계지도사 1급 전문가가 고객님의 소중한 자산을 지켜드립니다.</p>
+                </div>
+
+                <div class="profile-highlight-box">
+                    <div class="profile-left">
+                        <div class="profile-header-meta">
+                            <span class="agency-tag">SGI서울보증 구리지점 행복대리점</span>
+                            <h3 class="profile-name">장용태 <span class="profile-role">심사역</span></h3>
+                            <p class="profile-job">납세(증여세, 상속세) 전문 보증보험 영업 및 심사 총괄</p>
+                        </div>
+
+                        <div class="qualification-card">
+                            <div class="cert-gold-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong class="cert-title">가업승계지도사 1급 자격 보유</strong>
+                                <span class="cert-issuer">발급기관 : 사단법인 한국가업승계협회</span>
+                                <p class="cert-desc">단순 보증서 발급을 넘어, 기업 및 자산가의 상속·증여 시 절세 및 리스크를 종합 분석합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="blog-banner-box">
+                            <div class="blog-info">
+                                <span class="blog-tag">네이버 공식 블로그</span>
+                                <strong>blog.naver.com/8470005</strong>
+                                <p>상속세·증여세 납세보증 실제 심사 사례 및 보증보험 노하우 연재 중</p>
+                            </div>
+                            <a href="https://blog.naver.com/8470005" target="_blank" rel="noopener noreferrer" class="btn btn-blog">
+                                <span>블로그 방문하기 ↗</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="profile-right">
+                        <h4 class="right-heading">왜 행복대리점 장용태 심사역인가요?</h4>
+                        <div class="strength-grid-2">
+                            <div class="s-card">
+                                <div class="s-icon">01</div>
+                                <h5>세무서 납세담보 심사 노하우</h5>
+                                <p>국세청 및 세무서 연부연납 신청 기한 내 신속한 보증 승인을 이끌어내는 정밀 사전 심사를 진행합니다.</p>
+                            </div>
+                            <div class="s-card">
+                                <div class="s-icon">02</div>
+                                <h5>부동산 근저당 대비 비용 절감</h5>
+                                <p>부동산 근저당권 설정 시 발생하는 막대한 감정평가비, 설정 수수료, 재산 처분 제약을 보증보험으로 해결합니다.</p>
+                            </div>
+                            <div class="s-card">
+                                <div class="s-icon">03</div>
+                                <h5>1:1 맞춤형 가업승계 자문</h5>
+                                <p>가업승계지도사 1급으로서 가업상속공제, 증여특례 요건과 연계하여 최적의 납세 담보 구조를 설계합니다.</p>
+                            </div>
+                            <div class="s-card">
+                                <div class="s-icon">04</div>
+                                <h5>전국 비대면 전자서명 발급</h5>
+                                <p>공인인증서 전자서명을 통해 지점 방문 없이 사무실이나 자택에서 당일 원스톱 증권 발급 및 세무서 전송이 가능합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 핵심 전문분야: 납세보증보험 상세 안내 -->
+        <section class="section tax-section" id="tax-guarantee">
+            <div class="container">
+                <div class="section-title-wrap text-center">
+                    <span class="sub-tag">CORE SPECIALTY</span>
+                    <h2 class="main-title">상속세 · 증여세 납세보증보험 안내</h2>
+                    <p class="title-desc">목돈이 들어가는 상속세와 증여세, 연부연납 제도를 활용하고 보증보험증권으로 담보를 해결하세요.</p>
+                </div>
+
+                <!-- 비교 카드: 부동산 담보 vs 보증보험 담보 -->
+                <div class="comparison-card-wrap">
+                    <div class="comp-card card-weak">
+                        <div class="comp-badge">기존 방식</div>
+                        <h3 class="comp-title">부동산 근저당권 설정</h3>
+                        <ul class="comp-list">
+                            <li><span class="cross">✕</span> 높은 공인 감정평가 수수료 발생</li>
+                            <li><span class="cross">✕</span> 법무사 비용 및 근저당 설정 등록세 발생</li>
+                            <li><span class="cross">✕</span> 담보 부동산의 매매 및 추가 대출 불가능</li>
+                            <li><span class="cross">✕</span> 세무서 현장 조사 및 등기 처리로 긴 소요 시간</li>
+                        </ul>
+                    </div>
+
+                    <div class="comp-vs">VS</div>
+
+                    <div class="comp-card card-strong">
+                        <div class="comp-badge best">추천 방식</div>
+                        <h3 class="comp-title">SGI서울보증 납세보증보험</h3>
+                        <ul class="comp-list">
+                            <li><span class="check">✓</span> 저렴한 연간 보증보험료로 초기 현금 부담 최소화</li>
+                            <li><span class="check">✓</span> 부동산 감정평가 불필요, 등기 비용 완전 절감</li>
+                            <li><span class="check">✓</span> 보유 부동산의 자유로운 활용 (매매·임대·대출 유지)</li>
+                            <li><span class="check">✓</span> 심사 완료 즉시 공인 전자증권 세무서 직접 전송</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 납세보증 4단계 절차 -->
+                <div class="process-wrapper">
+                    <h3 class="process-heading">납세보증보험 신속 발급 절차</h3>
+                    <div class="process-grid">
+                        <div class="step-card">
+                            <span class="step-num">STEP 01</span>
+                            <h4>전화 및 서류 접수</h4>
+                            <p>납세고지서 또는 세무사 신고서, 기본 인적사항 제출</p>
+                        </div>
+                        <div class="step-card">
+                            <span class="step-num">STEP 02</span>
+                            <h4>사전 정밀 심사</h4>
+                            <p>신용도 및 자산 현황 분석 후 최적 보증 한도 산출</p>
+                        </div>
+                        <div class="step-card">
+                            <span class="step-num">STEP 03</span>
+                            <h4>보험료 산정 및 전자서명</h4>
+                            <p>공동인증서/금융인증서로 스마트폰·PC 간편 청약</p>
+                        </div>
+                        <div class="step-card">
+                            <span class="step-num">STEP 04</span>
+                            <h4>증권 발급 및 세무서 제출</h4>
+                            <p>보증증권 관할 세무서 전자 전송 또는 출력 제출 완료</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 취급 업무 전체 섹션 (블로그 및 지점 취급업무 반영) -->
+        <section class="section services-section" id="services">
+            <div class="container">
+                <div class="section-title-wrap text-center">
+                    <span class="sub-tag">SERVICES</span>
+                    <h2 class="main-title">행복대리점 종합 취급 업무</h2>
+                    <p class="title-desc">SGI서울보증의 모든 보증 상품을 신속하고 정확하게 원스톱으로 처리해 드립니다.</p>
+                </div>
+
+                <div class="service-cards-grid">
+                    <!-- 서비스 1 -->
+                    <div class="svc-card featured">
+                        <div class="svc-icon-box">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        </div>
+                        <h3>납세보증보험 (특화)</h3>
+                        <p class="svc-desc">상속세 및 증여세 연부연납, 징수유예 등 국세청·관할 세무서 제출용 담보 보증보험증권 발급 및 정밀 심사</p>
+                        <ul class="svc-checklist">
+                            <li>상속세 연부연납 납세담보</li>
+                            <li>증여세 분납 및 징수유예 담보</li>
+                            <li>가업상속공제 사후관리 연계</li>
+                        </ul>
+                    </div>
+
+                    <!-- 서비스 2 -->
+                    <div class="svc-card">
+                        <div class="svc-icon-box">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                        </div>
+                        <h3>계약 및 이행보증보험</h3>
+                        <p class="svc-desc">공공기관 및 민간 기업 간 계약 체결 시 신용 보강을 위한 각종 이행보증증권 발급</p>
+                        <ul class="svc-checklist">
+                            <li>입찰보증보험 (나라장터 전송)</li>
+                            <li>계약이행 및 하자보수보증보험</li>
+                            <li>선급금(전도금) 반환보증보험</li>
+                        </ul>
+                    </div>
+
+                    <!-- 서비스 3 -->
+                    <div class="svc-card">
+                        <div class="svc-icon-box">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        </div>
+                        <h3>인허가 및 공탁보증보험</h3>
+                        <p class="svc-desc">지자체 인허가 취득 조건 및 법원 가압류/가처분 신청 시 공탁금 대체용 보증서 발급</p>
+                        <ul class="svc-checklist">
+                            <li>각종 관공서 인허가보증보험</li>
+                            <li>재판상 공탁보증보험</li>
+                            <li>가맹사업(프랜차이즈) 보증보험</li>
+                        </ul>
+                    </div>
+
+                    <!-- 서비스 4 -->
+                    <div class="svc-card">
+                        <div class="svc-icon-box">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        </div>
+                        <h3>계약 유지관리 및 환급 업무</h3>
+                        <p class="svc-desc">이미 가입된 보험 계약의 사후 변경, 해지, 담보 반환 및 보험료 환급 절차 지원</p>
+                        <ul class="svc-checklist">
+                            <li>보험계약 내용 변경(금액·기간 연장)</li>
+                            <li>담보물 취득 및 안전한 반환 처리</li>
+                            <li>조기 해지 및 미경과 보험료 환급</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 납세보증보험료 모의 계산기 (인터랙티브 기능) -->
+        <section class="section calc-section" id="calculator">
+            <div class="container">
+                <div class="calc-container-box">
+                    <div class="calc-info-col">
+                        <span class="sub-tag">PREVIEW CALCULATOR</span>
+                        <h2 class="calc-title">납세보증보험료 <br>간편 모의 계산기</h2>
+                        <p class="calc-desc">
+                            납부할 세액(담보 필요 금액)과 보증 기간을 입력하시면 대략적인 예상 보증보험료를 즉시 확인하실 수 있습니다.
+                        </p>
+                        <div class="calc-notice">
+                            <strong>💡 참고 안내</strong>
+                            <p>세무서 연부연납 신청 시 통상 연부연납 세액의 <strong>110%~120%</strong>에 해당하는 담보 보증서 제출을 요구합니다. 정확한 요율은 고객 신용도 및 심사 결과에 따라 달라집니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="calc-form-col">
+                        <div class="calc-card">
+                            <div class="form-group">
+                                <label for="calc-tax-type">보증 종류 선택</label>
+                                <select id="calc-tax-type" class="calc-input">
+                                    <option value="inheritance">상속세 연부연납 납세보증 (연 약 0.7~1.1%)</option>
+                                    <option value="gift">증여세 분납 납세보증 (연 약 0.7~1.1%)</option>
+                                    <option value="general">기타 일반 국세·지방세 납세보증</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="calc-amount">담보 필요 금액 (원)</label>
+                                <input type="number" id="calc-amount" class="calc-input" placeholder="예: 300000000 (3억원)" value="300000000" step="10000000">
+                                <span class="calc-amount-korean" id="calc-amount-korean">3억 원</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="calc-months">보증 기간</label>
+                                <select id="calc-months" class="calc-input">
+                                    <option value="12" selected>1년 (12개월)</option>
+                                    <option value="24">2년 (24개월)</option>
+                                    <option value="36">3년 (36개월)</option>
+                                    <option value="60">5년 (60개월 - 상속세 최장)</option>
+                                </select>
+                            </div>
+
+                            <div class="calc-result-box">
+                                <div class="result-row">
+                                    <span>예상 연간 보증료율 (기준)</span>
+                                    <strong id="result-rate">약 0.95%</strong>
+                                </div>
+                                <div class="result-row total">
+                                    <span>총 예상 보증보험료</span>
+                                    <strong class="total-price" id="result-premium">2,850,000 원</strong>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-calc-action" onclick="requestWithCalc()">
+                                이 견적으로 1:1 심사 상담 신청하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 대리점 정보 및 오시는 길 (첨부 이미지 반영) -->
+        <section class="section location-section" id="location">
+            <div class="container">
+                <div class="section-title-wrap text-center">
+                    <span class="sub-tag">LOCATION & AGENCY</span>
+                    <h2 class="main-title">대리점 안내 및 오시는 길</h2>
+                    <p class="title-desc">경기 구리 및 남양주 법조타운 인근에 위치하며, 전국 어디서나 온라인으로 빠르고 안전하게 발급됩니다.</p>
+                </div>
+
+                <div class="location-card-grid">
+                    <!-- 상세 정보 카드 -->
+                    <div class="agency-details-card">
+                        <div class="branch-top-header">
+                            <span class="branch-pill">[구리지점]</span>
+                            <h3>SGI서울보증 행복대리점</h3>
+                        </div>
+
+                        <ul class="agency-info-list">
+                            <li>
+                                <span class="info-k">대표자</span>
+                                <span class="info-v">김현이</span>
+                            </li>
+                            <li>
+                                <span class="info-k">전문 심사역</span>
+                                <span class="info-v"><strong>장용태</strong> (가업승계지도사 1급)</span>
+                            </li>
+                            <li>
+                                <span class="info-k">대표 전화</span>
+                                <span class="info-v">
+                                    <a href="tel:1566-1028" class="tel-link"><strong>1566-1028</strong></a>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="info-k">팩스 번호</span>
+                                <span class="info-v">0505-847-0005</span>
+                            </li>
+                            <li>
+                                <span class="info-k">이메일</span>
+                                <span class="info-v">8470005@naver.com</span>
+                            </li>
+                            <li>
+                                <span class="info-k">공식 홈페이지</span>
+                                <span class="info-v">
+                                    <a href="http://happy1234.sgica.co.kr" target="_blank" rel="noopener noreferrer" class="link-sgica">happy1234.sgica.co.kr ↗</a>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="info-k">네이버 블로그</span>
+                                <span class="info-v">
+                                    <a href="https://blog.naver.com/8470005" target="_blank" rel="noopener noreferrer" class="link-sgica">blog.naver.com/8470005 ↗</a>
+                                </span>
+                            </li>
+                            <li class="address-item">
+                                <span class="info-k">사업장 주소</span>
+                                <span class="info-v">
+                                    (11924) 경기 구리시 경춘로 158 2F동 2층 구리사옥 (교문동, 한화생명)
+                                    <small class="addr-detail">※ 의정부지방법원 남양주지원 맞은편 / 다산책길 인근</small>
+                                </span>
+                            </li>
+                        </ul>
+
+                        <div class="agency-action-btns">
+                            <a href="tel:1566-1028" class="btn btn-call-direct">
+                                📞 전화 상담하기
+                            </a>
+                            <button class="btn btn-copy-addr" onclick="copyContact('경기 구리시 경춘로 158 2F동 2층 구리사옥(교문동, 한화생명)', '대리점 주소')">
+                                📍 주소 복사
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 지도 및 길찾기 시각 안내 -->
+                    <div class="map-visual-card">
+                        <div class="map-header">
+                            <span>🗺️ 행복대리점 위치 안내</span>
+                            <span class="map-sub">경춘로 158 한화생명 구리사옥 2층</span>
+                        </div>
+                        
+                        <!-- 모던 지도 인포그래픽 박스 -->
+                        <div class="map-mockup-frame">
+                            <div class="map-pin-pulse">
+                                <div class="pulse-ring"></div>
+                                <div class="pin-point">📍</div>
+                                <div class="pin-label">SGI서울보증 행복대리점 (2층)</div>
+                            </div>
+                            <div class="landmark landmark-court">의정부지방법원 남양주지원</div>
+                            <div class="landmark landmark-library">정약용도서관 / 다산책길</div>
+                            <div class="landmark landmark-cu">경기시청자미디어센터</div>
+                            <div class="road-line road-gyeongchun">경춘로 (158)</div>
+                        </div>
+
+                        <div class="map-btn-row">
+                            <a href="https://map.kakao.com/?q=경기%20구리시%20경춘로%20158" target="_blank" rel="noopener noreferrer" class="btn btn-map kakao">
+                                카카오맵에서 길찾기
+                            </a>
+                            <a href="https://map.naver.com/v5/search/경기%20구리시%20경춘로%20158" target="_blank" rel="noopener noreferrer" class="btn btn-map naver">
+                                네이버지도에서 길찾기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. 온라인 상담 신청 폼 -->
+        <section class="section consult-section" id="consultation">
+            <div class="container">
+                <div class="consult-form-wrapper">
+                    <div class="consult-intro">
+                        <span class="sub-tag white">DIRECT INQUIRY</span>
+                        <h2 class="consult-title">빠른 보증 심사 및 상담 신청</h2>
+                        <p class="consult-desc">
+                            납세보증, 이행보증 등 필요하신 보증 내용과 연락처를 남겨주시면 <strong>장용태 심사역</strong>이 검토 후 신속하게 유선으로 연락드립니다.
+                        </p>
+                        
+                        <div class="quick-contact-callout">
+                            <p>급하신 세무서 제출 일정은 전화로 먼저 문의주세요!</p>
+                            <a href="tel:1566-1028" class="callout-tel">📞 1566-1028</a>
+                            <span class="callout-fax">팩스 접수 : 0505-847-0005</span>
+                        </div>
+                    </div>
+
+                    <div class="consult-form-box">
+                        <form id="insurance-form" class="inquiry-form">
+                            <div class="form-row">
+                                <div class="f-field">
+                                    <label for="client-name">성함 / 기업명 <span class="req">*</span></label>
+                                    <input type="text" id="client-name" placeholder="홍길동 또는 (주)회사명" required>
+                                </div>
+                                <div class="f-field">
+                                    <label for="client-phone">연락처 <span class="req">*</span></label>
+                                    <input type="tel" id="client-phone" placeholder="010-0000-0000" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="f-field">
+                                    <label for="consult-type">보증 종목 <span class="req">*</span></label>
+                                    <select id="consult-type" required>
+                                        <option value="상속세 연부연납 납세보증">상속세 연부연납 납세보증</option>
+                                        <option value="증여세 분납 납세보증">증여세 분납 납세보증</option>
+                                        <option value="가업승계 절세 및 보증 컨설팅">가업승계 절세 및 보증 컨설팅</option>
+                                        <option value="계약/입찰/하자 이행보증">계약 / 입찰 / 하자 이행보증</option>
+                                        <option value="인허가 및 공탁보증">인허가 및 공탁보증</option>
+                                        <option value="기타 보증 및 환급 문의">기타 보증 및 계약변경/환급</option>
+                                    </select>
+                                </div>
+                                <div class="f-field">
+                                    <label for="target-amount">예상 보증(세액) 금액</label>
+                                    <input type="text" id="target-amount" placeholder="예: 3억 원 또는 미정">
+                                </div>
+                            </div>
+
+                            <div class="f-field">
+                                <label for="client-memo">문의 상세 내용</label>
+                                <textarea id="client-memo" rows="4" placeholder="관할 세무서명, 납부 기한, 특이사항 등을 적어주시면 더욱 빠르고 정확한 심사가 가능합니다."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-submit-consult">
+                                <span>상담 신청서 접수하기</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <span class="f-sgic">SGI 서울보증</span>
+                    <strong class="f-agency">행복대리점</strong>
+                    <p class="f-summary">상속세·증여세 납세보증 특화 심사 및 가업승계 종합 컨설팅</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://blog.naver.com/8470005" target="_blank" rel="noopener noreferrer">네이버 공식 블로그</a>
+                    <a href="http://happy1234.sgica.co.kr" target="_blank" rel="noopener noreferrer">공식 대리점 홈페이지</a>
+                    <a href="https://www.sgic.co.kr" target="_blank" rel="noopener noreferrer">SGI서울보증 본사</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>
+                    대리점명: SGI서울보증 행복대리점 | 대표자: 김현이 | 전문 심사역: 장용태 (가업승계지도사 1급)<br>
+                    대표번호: 1566-1028 | 팩스: 0505-847-0005 | 이메일: 8470005@naver.com<br>
+                    사업장 주소: (11924) 경기 구리시 경춘로 158 2F동 2층 구리사옥(교문동, 한화생명)
+                </p>
+                <p class="copyright">
+                    © 2026 SGI서울보증 행복대리점. All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 플로팅 빠른 전화 문의 버튼 -->
+    <aside class="floating-quick-bar">
+        <a href="tel:1566-1028" class="float-btn call" title="전화 상담 연결">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <span>1566-1028</span>
+        </a>
+        <a href="#consultation" class="float-btn consult" title="상담 신청 접수">
+            <span>상담 신청</span>
+        </a>
+    </aside>
+
+    <!-- 알림 토스트 UI -->
+    <div id="toast" class="toast-popup">메시지가 복사되었습니다.</div>
+
+    <!-- 스크립트 연결 -->
     <script src="script.js"></script>
 </body>
 </html>
