@@ -1,35 +1,55 @@
 /* ============================================================
-   SGI서울보증 행복대리점 - SGIC 브랜드 컬러 기반 모던 웹 디자인
-   주요 컬러: SGI Deep Navy (#003B8E), SGI Blue (#005BAC), SGI Sky (#00A3E0)
+   SGI서울보증 행복대리점 - 공식 CI 기반 현대적 디자인
+   공식 CI 3대 핵심 컬러:
+   1. Passion (열정/도전/혁신): #FF4F04
+   2. Leading (세계 도약 선도): #052F95
+   3. Reliability (전문성/신뢰): #061661
    ============================================================ */
 
 :root {
-    --sgic-navy: #003B8E;
-    --sgic-navy-dark: #002B66;
-    --sgic-blue: #005BAC;
-    --sgic-blue-hover: #004C91;
-    --sgic-sky: #00A3E0;
-    --sgic-sky-light: #E1F4FC;
-    --sgic-bg-light: #F4F8FC;
-    
+    /* SGI 공식 CI 3대 컬러 */
+    --sgi-passion: #FF4F04;         /* Passion: 열정과 도전, 혁신 정신 */
+    --sgi-passion-hover: #E04200;
+    --sgi-passion-light: #FFF2ED;
+    --sgi-passion-glow: rgba(255, 79, 4, 0.28);
+
+    --sgi-leading: #052F95;         /* Leading: 선도적이고 생동감 있는 코발트 블루 */
+    --sgi-leading-hover: #03216E;
+    --sgi-leading-light: #EBF2FD;
+    --sgi-leading-glow: rgba(5, 47, 149, 0.25);
+
+    --sgi-reliability: #061661;     /* Reliability: 신뢰와 전문성의 딥 네이비 */
+    --sgi-reliability-dark: #020B38;
+    --sgi-reliability-light: #F0F4FA;
+
+    /* 기존 변수 하위 호환 및 CI 컬러 바인딩 */
+    --sgic-navy: var(--sgi-reliability);
+    --sgic-navy-dark: var(--sgi-reliability-dark);
+    --sgic-blue: var(--sgi-leading);
+    --sgic-blue-hover: var(--sgi-leading-hover);
+    --sgic-sky: var(--sgi-passion);
+    --sgic-sky-light: var(--sgi-leading-light);
+    --sgic-bg-light: var(--bg-slate);
+
     --gold-trust: #D97706;
     --gold-bg: #FEF3C7;
 
     --bg-white: #FFFFFF;
-    --bg-slate: #F8FAFC;
+    --bg-slate: #F5F8FC;
     --bg-card: #FFFFFF;
 
-    --text-navy: #0F172A;
-    --text-body: #334155;
-    --text-muted: #64748B;
-    --text-light: #94A3B8;
+    --text-navy: #061661;
+    --text-body: #2B3857;
+    --text-muted: #5A698A;
+    --text-light: #8E9DBB;
 
-    --border-light: #E2E8F0;
-    --border-blue: #BAE6FD;
+    --border-light: #DCE5F2;
+    --border-blue: #C5D8F6;
+    --border-passion: #FFD4C4;
     
-    --shadow-sm: 0 2px 4px rgba(0, 59, 142, 0.04);
-    --shadow-md: 0 6px 16px rgba(0, 59, 142, 0.08);
-    --shadow-lg: 0 16px 36px rgba(0, 59, 142, 0.12);
+    --shadow-sm: 0 2px 6px rgba(6, 22, 97, 0.05);
+    --shadow-md: 0 8px 24px rgba(6, 22, 97, 0.09);
+    --shadow-lg: 0 20px 48px rgba(6, 22, 97, 0.14);
 
     --radius-sm: 6px;
     --radius-md: 12px;
@@ -83,7 +103,7 @@ button {
    최상단 퀵 안내 바
    ============================================================ */
 .top-announcement-bar {
-    background-color: var(--sgic-navy-dark);
+    background: linear-gradient(90deg, var(--sgi-reliability-dark) 0%, var(--sgi-reliability) 100%);
     color: #FFFFFF;
     font-size: 0.84rem;
     padding: 9px 0;
@@ -105,13 +125,14 @@ button {
 }
 
 .badge-tag {
-    background-color: var(--sgic-sky);
+    background-color: var(--sgi-passion);
     color: #FFFFFF;
     font-size: 0.72rem;
-    font-weight: 700;
+    font-weight: 800;
     padding: 2px 8px;
     border-radius: var(--radius-sm);
     letter-spacing: -0.02em;
+    box-shadow: 0 2px 6px var(--sgi-passion-glow);
 }
 
 .top-bar-text {
@@ -134,7 +155,7 @@ button {
 }
 
 .top-contact-item:hover {
-    color: var(--sgic-sky);
+    color: var(--sgi-passion-light);
 }
 
 .bar-divider {
@@ -154,7 +175,7 @@ button {
 }
 
 /* ============================================================
-   메인 내비게이션 바
+   메인 내비게이션 바 & 공식 CI 로고
    ============================================================ */
 .navbar {
     position: sticky;
@@ -162,11 +183,11 @@ button {
     left: 0;
     width: 100%;
     z-index: 100;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-light);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    padding: 14px 0;
+    border-bottom: 1.5px solid var(--border-light);
+    box-shadow: 0 4px 16px rgba(6, 22, 97, 0.04);
+    padding: 12px 0;
     transition: var(--transition);
 }
 
@@ -179,49 +200,69 @@ button {
 .nav-brand {
     display: flex;
     align-items: center;
+    text-decoration: none;
+}
+
+.brand-ci-wrapper {
+    display: flex;
+    align-items: center;
     gap: 14px;
 }
 
-.brand-logo-box {
-    background: linear-gradient(135deg, var(--sgic-navy) 0%, var(--sgic-blue) 100%);
-    padding: 6px 12px;
-    border-radius: var(--radius-sm);
-    color: #FFFFFF;
-    display: flex;
-    align-items: baseline;
-    gap: 5px;
+.brand-ci-symbol {
+    height: 44px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(6, 22, 97, 0.1));
 }
 
-.sgic-txt {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.15rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-}
-
-.sgic-sub {
-    font-size: 0.75rem;
-    font-weight: 600;
-    opacity: 0.9;
-}
-
-.brand-name-box {
+.brand-logotype-box {
     display: flex;
     flex-direction: column;
 }
 
-.agency-title {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--sgic-navy);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
+.brand-main-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.15;
 }
 
-.agency-sub {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-muted);
+.ci-sgi {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--sgi-reliability);
+    letter-spacing: -0.04em;
+}
+
+.ci-kor {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--sgi-leading);
+    letter-spacing: -0.03em;
+}
+
+.agency-pill {
+    background: linear-gradient(135deg, var(--sgi-passion) 0%, #FF682E 100%);
+    color: #FFFFFF;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    letter-spacing: -0.01em;
+    box-shadow: 0 2px 6px var(--sgi-passion-glow);
+    margin-left: 2px;
+}
+
+.ci-slogan {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--sgi-leading);
+    letter-spacing: 0.02em;
+    margin-top: 2px;
+    opacity: 0.88;
 }
 
 .nav-links {
@@ -232,31 +273,33 @@ button {
 
 .nav-link {
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-body);
+    transition: var(--transition);
 }
 
 .nav-link:hover {
-    color: var(--sgic-blue);
+    color: var(--sgi-leading);
 }
 
 .nav-btn-call {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background-color: var(--sgic-navy);
+    gap: 7px;
+    background: linear-gradient(135deg, var(--sgi-reliability) 0%, var(--sgi-leading) 100%);
     color: #FFFFFF;
-    padding: 9px 18px;
+    padding: 10px 20px;
     border-radius: var(--radius-full);
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: 0.92rem;
+    font-weight: 800;
     transition: var(--transition);
-    box-shadow: 0 4px 12px rgba(0, 59, 142, 0.2);
+    box-shadow: 0 4px 14px var(--sgi-leading-glow);
 }
 
 .nav-btn-call:hover {
-    background-color: var(--sgic-blue);
+    background: linear-gradient(135deg, var(--sgi-passion) 0%, #FF682E 100%);
     transform: translateY(-1px);
+    box-shadow: 0 4px 16px var(--sgi-passion-glow);
 }
 
 .mobile-toggle {
@@ -1240,80 +1283,26 @@ button {
     font-weight: 500;
 }
 
-.map-mockup-frame {
-    background-color: #EBF3FA;
+.map-image-wrapper {
     border-radius: var(--radius-md);
     border: 1.5px solid var(--border-light);
     height: 280px;
-    position: relative;
     overflow: hidden;
     margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.road-line {
-    position: absolute;
-    background-color: #F8FAFC;
-    border: 2px dashed #CBD5E1;
+.map-real-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: var(--transition);
 }
 
-.road-gyeongchun {
-    width: 120%;
-    height: 38px;
-    transform: rotate(-15deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #64748B;
+.map-real-img:hover {
+    transform: scale(1.03);
 }
-
-.map-pin-pulse {
-    position: absolute;
-    top: 42%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 10;
-}
-
-.pin-point {
-    font-size: 2.2rem;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-}
-
-.pin-label {
-    background-color: var(--sgic-navy);
-    color: #FFFFFF;
-    font-size: 0.8rem;
-    font-weight: 800;
-    padding: 6px 12px;
-    border-radius: var(--radius-full);
-    white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0, 59, 142, 0.3);
-    margin-top: 2px;
-}
-
-.landmark {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-sm);
-    padding: 4px 8px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #334155;
-    z-index: 2;
-}
-
-.landmark-court { top: 14%; left: 18%; }
-.landmark-library { bottom: 12%; left: 24%; }
-.landmark-cu { top: 20%; right: 14%; }
 
 .map-btn-row {
     display: flex;
@@ -1488,26 +1477,53 @@ button {
     gap: 20px;
 }
 
-.f-sgic {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 800;
-    color: #FFFFFF;
-    background-color: var(--sgic-blue);
-    padding: 3px 8px;
-    border-radius: var(--radius-sm);
+.footer-ci-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.f-agency {
-    font-size: 1.3rem;
+.footer-ci-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-symbol-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    background-color: #FFFFFF;
+    padding: 3px 6px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.footer-brand-title {
+    font-size: 1.25rem;
+    font-weight: 800;
     color: #FFFFFF;
-    margin-left: 8px;
+    line-height: 1.2;
+}
+
+.footer-brand-title strong {
+    color: #FFFFFF;
+}
+
+.footer-slogan-txt {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: var(--sgi-passion);
+    letter-spacing: 0.04em;
+    display: block;
+    margin-top: 2px;
 }
 
 .f-summary {
     font-size: 0.84rem;
-    color: #64748B;
-    margin-top: 8px;
+    color: #8E9DBB;
+    margin-top: 4px;
 }
 
 .footer-links {
