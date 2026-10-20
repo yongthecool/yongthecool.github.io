@@ -1080,40 +1080,161 @@ button {
     display: block;
     font-size: 0.85rem;
     font-weight: 700;
-    color: var(--sgic-blue);
+    color: var(--sgi-leading);
     margin-top: 6px;
     text-align: right;
 }
 
-.calc-result-box {
-    background-color: var(--sgic-bg-light);
+.calc-rate-info-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    background-color: var(--sgi-reliability-light);
+    border: 1px solid var(--border-light);
     border-radius: var(--radius-md);
-    padding: 20px;
-    margin: 24px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    padding: 12px 14px;
+    margin-top: 14px;
 }
 
-.result-row {
+.rate-badge-item {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    font-size: 0.9rem;
+    text-align: center;
+    gap: 3px;
+}
+
+.rate-badge-label {
+    font-size: 0.76rem;
+    font-weight: 600;
     color: var(--text-muted);
 }
 
-.result-row.total {
-    border-top: 1px solid var(--border-light);
-    padding-top: 12px;
-    font-size: 1.05rem;
+.rate-badge-val {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--sgi-leading);
+}
+
+.calc-result-box {
+    background: linear-gradient(135deg, var(--sgi-leading-light) 0%, #FFFFFF 100%);
+    border: 1.5px solid var(--border-blue);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    margin: 20px 0 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(5, 47, 149, 0.06);
+}
+
+/* 차수별 상세 테이블 아코디언 */
+.calc-schedule-wrap {
+    margin-bottom: 20px;
+}
+
+.btn-toggle-schedule {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: none;
+    border: 1px dashed var(--border-blue);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-family: inherit;
+    font-size: 0.88rem;
     font-weight: 700;
+    color: var(--sgi-leading);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-toggle-schedule:hover {
+    background-color: var(--sgi-leading-light);
+    border-color: var(--sgi-leading);
+}
+
+.btn-toggle-schedule .chevron-icon {
+    transition: transform 0.25s ease;
+}
+
+.btn-toggle-schedule.active .chevron-icon {
+    transform: rotate(180deg);
+}
+
+.schedule-table-box {
+    margin-top: 12px;
+    background-color: #FAFCFE;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.schedule-table th,
+.schedule-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.schedule-table th {
+    background-color: var(--sgi-reliability-light);
+    color: var(--sgi-reliability);
+    font-weight: 700;
+    text-align: center;
+}
+
+.schedule-table td:first-child {
+    text-align: center;
+    font-weight: 700;
+    color: var(--sgi-leading);
+}
+
+.schedule-table tbody tr:hover {
+    background-color: #F0F6FF;
+}
+
+.schedule-table tfoot tr {
+    background-color: #EBF2FD;
+    font-weight: 800;
+    color: var(--sgi-reliability);
+    border-top: 2px solid var(--sgi-leading);
+}
+
+.schedule-table-note {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.result-row.total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    font-weight: 800;
     color: var(--text-navy);
 }
 
 .total-price {
-    font-size: 1.45rem;
-    color: var(--sgic-navy);
+    font-size: 1.6rem;
+    color: var(--sgi-leading);
     font-weight: 900;
 }
 
@@ -1451,9 +1572,23 @@ button {
     margin-top: 8px;
 }
 
-.btn-submit-consult:hover {
-    background: linear-gradient(135deg, var(--sgic-navy-dark) 0%, var(--sgic-navy) 100%);
-    transform: translateY(-2px);
+.btn-submit-consult:disabled {
+    background: #94A3B8;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.form-privacy-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+.form-privacy-note strong {
+    color: var(--sgi-leading);
 }
 
 /* ============================================================
