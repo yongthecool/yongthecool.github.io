@@ -261,13 +261,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. 상담 폼 접수 이벤트 (8470005@naver.com 메일 전송)
+    // 5. 상담 폼 접수 이벤트 (8470005@naver.com 메일 전송 + 개인정보 동의 검증)
     const insuranceForm = document.getElementById('insurance-form');
     const submitBtn = document.getElementById('btn-submit-consult');
 
     if (insuranceForm) {
         insuranceForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            // 개인정보 취급방침 동의 여부 필수 검증
+            const privacyAgreeYes = document.getElementById('privacy-agree-yes');
+            if (!privacyAgreeYes || !privacyAgreeYes.checked) {
+                showToast('⚠️ 개인정보 수집 및 이용에 ‘동의함’을 선택하셔야 상담 신청이 가능합니다.');
+                const consentCard = document.getElementById('privacy-consent-card');
+                if (consentCard) {
+                    consentCard.classList.add('highlight-warning');
+                    consentCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                        consentCard.classList.remove('highlight-warning');
+                    }, 1500);
+                }
+                if (privacyAgreeYes) {
+                    privacyAgreeYes.focus();
+                }
+                return;
+            }
 
             const clientName = document.getElementById('client-name')?.value.trim() || '고객';
             const clientPhone = document.getElementById('client-phone')?.value.trim() || '';
@@ -288,6 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('보증종목', consultType);
             formData.append('예상보증_세액금액', targetAmount);
             formData.append('문의상세내용', clientMemo);
+            formData.append('개인정보_수집이용_동의', '동의완료');
             formData.append('_subject', `[서울보증 행복대리점] ${clientName}님의 ${consultType} 상담 신청`);
             formData.append('_template', 'table');
             formData.append('_captcha', 'false');
@@ -304,6 +323,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     showToast(`✅ ${clientName}님, [${consultType}] 상담 신청서가 행복대리점(8470005@naver.com)으로 정상 전송되었습니다! 곧 유선으로 안내드리겠습니다.`);
                     insuranceForm.reset();
+                    // 라디오 버튼 기본값(동의안함)으로 리셋
+                    const privacyAgreeNo = document.getElementById('privacy-agree-no');
+                    if (privacyAgreeNo) privacyAgreeNo.checked = true;
                 } else {
                     // API 응답 오류 시 표준 폼 전송 fallback
                     showToast(`📨 상담 신청서를 담당자(8470005@naver.com)에게 전송합니다.`);
@@ -321,6 +343,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// 약관 상세 접기/펼치기 토글
+window.togglePrivacyDetail = function() {
+    const box = document.getElementById('privacy-detail-box');
+    const txt = document.getElementById('privacy-toggle-text');
+    if (!box || !txt) return;
+
+    if (box.style.display === 'none') {
+        box.style.display = 'block';
+        txt.textContent = '약관 접기 ▴';
+    } else {
+        box.style.display = 'none';
+        txt.textContent = '약관 펼치기 ▾';
+    }
+};
 
 // 6. 차수별 상세 내역 보기 토글
 window.toggleScheduleTable = function() {

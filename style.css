@@ -1560,6 +1560,138 @@ button {
     box-shadow: 0 0 0 3px rgba(0, 59, 142, 0.12);
 }
 
+/* ============================================================
+   개인정보 취급방침 및 동의 스타일
+   ============================================================ */
+.privacy-consent-card {
+    background-color: var(--bg-slate);
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    margin: 16px 0 20px 0;
+    transition: var(--transition);
+}
+
+.privacy-consent-card.highlight-warning {
+    border-color: #E11D48;
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
+    animation: shakeWarning 0.4s ease;
+}
+
+@keyframes shakeWarning {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+}
+
+.privacy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.privacy-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-navy);
+}
+
+.btn-toggle-privacy {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--sgi-leading);
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.btn-toggle-privacy:hover {
+    background-color: var(--sgi-leading-light);
+}
+
+.privacy-body {
+    transition: all 0.25s ease;
+}
+
+.privacy-content-scroll {
+    max-height: 125px;
+    overflow-y: auto;
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-body);
+}
+
+.privacy-intro {
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--border-light);
+    margin-bottom: 8px;
+    color: var(--text-navy);
+}
+
+.privacy-section-item {
+    margin-bottom: 8px;
+}
+
+.privacy-section-item strong {
+    color: var(--sgi-leading);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.privacy-section-item p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.privacy-action-row {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.privacy-radio-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    user-select: none;
+}
+
+.radio-label input[type="radio"] {
+    accent-color: var(--sgi-leading);
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+}
+
+.radio-label strong.label-txt {
+    color: var(--sgi-leading);
+}
+
+.privacy-must-note {
+    font-size: 0.8rem;
+    color: #E11D48;
+    font-weight: 600;
+    margin: 0;
+}
+
 .btn-submit-consult {
     width: 100%;
     background: linear-gradient(135deg, var(--sgic-navy) 0%, var(--sgic-blue) 100%);
