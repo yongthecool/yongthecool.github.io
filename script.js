@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const clientName = document.getElementById('client-name').value;
             const consultType = document.getElementById('consult-type').value;
 
-            showToast(`✅ ${clientName}님, [${consultType}] 상담 신청이 정상 접수되었습니다! 장용태 심사역이 곧 유선으로 안내드리겠습니다.`);
+            showToast(`✅ ${clientName}님, [${consultType}] 상담 신청이 정상 접수되었습니다! 서울보증 행복대리점에서 곧 유선으로 안내드리겠습니다.`);
             insuranceForm.reset();
         });
     }
